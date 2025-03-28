@@ -4,8 +4,12 @@ local character = player.Character or player.CharacterAdded:Wait()
 local backpack = player:WaitForChild('Backpack')
 local humanoid = character:FindFirstChildOfClass('Humanoid')
 
+function get_mesh(rock)
+	return rock:FindFirstChildOfClass('MeshPart')
+end
+
 -- Cycle through all weapons, and use all skills
-function attack() 	
+function attack(position) 	
 	local weapons = {}
 
 	-- Get all weapons from player's backpack
@@ -47,7 +51,7 @@ function attack()
 			-- Iterate through each remote and invoke
 			for i, remote in remotes do
 				print('ROCK: Running remote ' .. i .. '...')
-				local status, err = pcall(function() remote:InvokeServer(unpack({ [1] = ability, [2] = character.HumanoidRootPart.Position})) end)
+				local status, err = pcall(function() remote:InvokeServer(unpack({ [1] = ability, [2] = position})) end)
 				print('ROCK: Ran remote ' .. i .. ' with result ' .. tostring(status) .. ' (' .. tostring(err) .. ')')
 			end				
 		end
@@ -152,10 +156,10 @@ while true do
 				print('ITERATION' .. tostring(iterations) .. ': Attacking active rock ' .. tostring(active_rock) .. '...')
 
 				local singular_rock = get_singular_rock(active_rock, rocks)
-
-				tween_to(singular_rock)
-
-				attack()				
+				local mesh = get_mesh(singular_rock)
+				print(mesh.Name)
+				tween_to(mesh)
+				attack(mesh.Position)				
 			else
 				-- Otherwise, check if another rock exists
 				if #rocks ~= 0 then
