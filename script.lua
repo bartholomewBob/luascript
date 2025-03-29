@@ -170,9 +170,8 @@ function get_singular_rock(rock_index, rocks)
 end
 
 function is_beat(time) 
-	return math.fmod(time, 2) <= 0.02
+	return math.fmod(time, 1) <= 0.015
 end
-
 
 -- Main loops
 local active_rock = -1
