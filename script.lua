@@ -6,6 +6,24 @@
 -- game:GetService("ReplicatedStorage"):WaitForChild("Events", 9e9):WaitForChild("PlaySkillCooldownAnimation", 9e9):Fire(unpack(args)) -- Event
 -- *Cycle through skills one by one when attacking rock, and check after each attack if rock stops glowing to save skills
 
+-- Check if golems exist
+function has_golem()
+    local spawns = game.Workspace._WorldOrigin.EnemySpawns
+
+    local exists = false
+    for _, child in spawns:GetChildren() do
+        if string.find(child.Name, 'Lava Golem') then
+            exists = true
+        end
+    end
+    
+    if spawns:FindFirstChild('Lava Golem [Lv. 2500]') then
+        exists = true
+    end
+	
+    return exists
+end
+
 -- Get player character
 function get_character()
 	local player = game.Players.LocalPlayer
@@ -195,13 +213,19 @@ game:GetService("RunService").Stepped:Connect(function(time)
 			local singular_rock = get_singular_rock(active_rock, rocks)
 			local mesh = get_mesh(singular_rock)
 
-			if mesh then
-				if is_beat(time) then print('RUN-ITERATION' .. tostring(run_iterations) .. ': Tweening to active rock ' .. tostring(active_rock) .. '...') end 	
+			
+			if has_golem() then				
+				if is_beat(time) then print('RUN-ITERATION' .. tostring(run_iterations) .. ': Lava golem cancelled tweening to active rock ' .. tostring(active_rock) .. '...') end 	
 			else
-				if is_beat(time) then print('RUN-ITERATION' .. tostring(run_iterations) .. ': Failed to find active rock ' .. tostring(active_rock) .. ' mesh') end
-			end
+				if mesh then
+					if is_beat(time) then print('RUN-ITERATION' .. tostring(run_iterations) .. ': Tweening to active rock ' .. tostring(active_rock) .. '...') end 	
+				else
+					if is_beat(time) then print('RUN-ITERATION' .. tostring(run_iterations) .. ': Failed to find active rock ' .. tostring(active_rock) .. ' mesh') end
+				end
 
-			tween_to(mesh, is_beat(time))	
+				tween_to(mesh, is_beat(time))				
+			end
+	
 		end
 	else
 		if is_beat(time) then print('RUN-ITERATION' .. tostring(run_iterations) .. ': Failed to find Prehistoric Island') end
@@ -224,13 +248,17 @@ while true do
 		-- Check if a glowing rock is actively being attacked
 		if active_rock ~= -1 then
 			-- Check if rock is still glowing
-			if is_glowing(active_rock, rocks) then
-				print('WHILE-ITERATION' .. tostring(while_iterations) .. ': Attacking active rock ' .. tostring(active_rock) .. '...')
-
+			if is_glowing(active_rock, rocks) then				
 				local singular_rock = get_singular_rock(active_rock, rocks)
 				local mesh = get_mesh(singular_rock)
 
-				attack(mesh.Position)				
+				if has_golem() then
+					print('WHILE-ITERATION' .. tostring(while_iterations) .. ': Lava golem cancelled attacking active rock ' .. tostring(active_rock) .. '...')
+				else
+					print('WHILE-ITERATION' .. tostring(while_iterations) .. ': Attacking active rock ' .. tostring(active_rock) .. '...')
+					attack(mesh.Position)				
+				end
+				
 			else
 				-- Otherwise, check if another rock exists
 				if #rocks ~= 0 then
