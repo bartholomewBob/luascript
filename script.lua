@@ -7,6 +7,12 @@ local character = player.Character or player.CharacterAdded:Wait()
 local backpack = player:WaitForChild('Backpack')
 local humanoid = character:FindFirstChildOfClass('Humanoid')
 
+function get_character()
+	local player = game.Players.LocalPlayer
+	local _character = player.Character or player.CharacterAdded:Wait()
+	return _character
+end
+
 function get_mesh(rock)
 	return rock:FindFirstChildOfClass('MeshPart')
 end
@@ -90,7 +96,15 @@ end
 
 -- Tween to part 
 function tween_to(part) 
-	local dist = (part.Position - character.HumanoidRootPart.Position).Magnitude
+	local _character
+
+	pcall(function() _character = get_character() end)
+
+	if _character == nil then
+		return
+	end
+	
+	local dist = (part.Position - _character.HumanoidRootPart.Position).Magnitude
 	local speed = 0
 
 	if dist < 150 then
@@ -108,7 +122,7 @@ function tween_to(part)
 	end
 
 	game:GetService("TweenService"):Create(
-		character.HumanoidRootPart,
+		_character.HumanoidRootPart,
 		TweenInfo.new(dist/speed, Enum.EasingStyle.Linear),
 		{CFrame = part.CFrame}
 	):Play()
