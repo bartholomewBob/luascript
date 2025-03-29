@@ -1,9 +1,10 @@
--- Dont teleport to volcanic rock if lava golems are spawned 
+-- *Dont teleport to volcanic rock if lava golems are spawned 
 -- -> (game.Workspace._WorldOrigin.EnemySpawns)
--- Dont teleport to volcanic rock if no skills are available 
+-- *Dont teleport to volcanic rock if no skills are available 
 -- -> (Listen to all PlaySkillCooldownAnimation BindableEvents, store in table and after alloted time remove from table + prevent script from using any skills in the cooldown table)
 -- local args = { [1] = "Z"; [2] = 7.5; }
 -- game:GetService("ReplicatedStorage"):WaitForChild("Events", 9e9):WaitForChild("PlaySkillCooldownAnimation", 9e9):Fire(unpack(args)) -- Event
+-- *Cycle through skills one by one when attacking rock, and check after each attack if rock stops glowing to save skills
 
 -- Get player character
 function get_character()
