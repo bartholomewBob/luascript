@@ -6,6 +6,8 @@
 -- game:GetService("ReplicatedStorage"):WaitForChild("Events", 9e9):WaitForChild("PlaySkillCooldownAnimation", 9e9):Fire(unpack(args)) -- Event
 -- *Cycle through skills one by one when attacking rock, and check after each attack if rock stops glowing to save skills
 
+-- Issue, when player does not manually equip weapons before script, remote functions dont load in humanoid
+
 -- Check if golems exist
 function has_golem()
     local spawns = game.Workspace._WorldOrigin.EnemySpawns
