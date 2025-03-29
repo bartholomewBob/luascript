@@ -160,8 +160,7 @@ while true do
 
 				local singular_rock = get_singular_rock(active_rock, rocks)
 				local mesh = get_mesh(singular_rock)
-				print(mesh.Name)
-				tween_to(mesh)
+
 				attack(mesh.Position)				
 			else
 				-- Otherwise, check if another rock exists
@@ -183,8 +182,23 @@ while true do
 		end
 	else
 		print('ITERATION' .. tostring(iterations) .. ': Failed to find Prehistoric Island...')
+		active_rock = -1
 	end
 
 	iterations += 1
 	wait(1)
 end
+
+game:GetService("RunService").Heartbeat:Connect(function()
+	-- Get active rock if exists and tween to each frame
+	if game:GetService('Workspace').Map:FindFirstChild('PrehistoricIsland') then		
+		local rocks = get_rocks()
+
+		if active_rock ~= -1 then
+			local singular_rock = get_singular_rock(active_rock, rocks)
+			local mesh = get_mesh(singular_rock)
+
+			tween_to(mesh)
+		end
+	end
+end)
