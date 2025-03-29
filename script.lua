@@ -1,3 +1,6 @@
+-- Make tween infinite in runservice and set to active rock index
+-- Add noclip to prevent damage
+
 print('ITERATION0: Started script')
 local player = game.Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
