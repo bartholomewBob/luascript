@@ -35,7 +35,7 @@ function attack(position)
 		return
 	end
 
-	local backpack = game.Players.LocalPlayer:findFirstChild('Backpack')
+	local backpack = game.Players.LocalPlayer:FindFirstChild('Backpack')
 	if not backpack then
 		print('ATTACK: Failed to find Backpack')
 		return
