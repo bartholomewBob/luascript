@@ -20,10 +20,22 @@ end
 -- Cycle through all weapons, and use all skills
 function attack(position) 	
 	local weapons = {}
+	local _character
 
+	-- TEST THIS
+	pcall(function() _character = get_character() end)
+
+	if _character == nil then
+		return
+	end
+
+	local _humanoid = _character:FindFirstChildOfClass('Humanoid')
+	
+	local _backpack = game.Players.LocalPlayer:WaitForChild('Backpack')
+	
 	-- Get all weapons from player's backpack
 	print('ROCK: Fetching weapons...')
-	for _, weapon in backpack:GetChildren() do
+	for _, weapon in _backpack:GetChildren() do
 		if weapon:FindFirstChild('EquipEvent') then
 			table.insert(weapons, weapon)
 		end
@@ -35,7 +47,7 @@ function attack(position)
 	for index, weapon in weapons do
 		print('ROCK: Equipping weapon ' .. weapon.Name)
 
-		humanoid:EquipTool(weapon)
+		_humanoid:EquipTool(weapon)
 		wait(0.5)
 
 		print('ROCK: Using abilities of weapon...')
@@ -50,7 +62,7 @@ function attack(position)
 			-- Get all remote functions for weapon skills
 			print('ROCK: Fetching remote functions...')
 			local remotes = {}
-			for _, child in humanoid:GetChildren() do			
+			for _, child in _humanoid:GetChildren() do			
 				if child:IsA('RemoteFunction') and #remotes < #weapons then
 					table.insert(remotes, child)
 				end
@@ -98,6 +110,7 @@ end
 function tween_to(part) 
 	local _character
 
+	-- TEST THIS
 	pcall(function() _character = get_character() end)
 
 	if _character == nil then
