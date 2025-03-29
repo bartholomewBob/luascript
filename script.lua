@@ -1,3 +1,6 @@
+-- Dont teleport to volcanic rock if lava golems are spawned
+-- Dont teleport to volcanic rock if no skills are available
+
 -- Get player character
 function get_character()
 	local player = game.Players.LocalPlayer
