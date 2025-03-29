@@ -119,12 +119,9 @@ function get_rocks()
 		local glow
 		pcall(function() glow = rock["VFXLayer"]["At0"]["Glow"] end)
 
-		print('ROCK' .. tostring(index) .. ': Found Rock')
 		-- Check if Glow is enabled
 		if glow then
-			print('ROCK' .. tostring(index) .. ': Found Glow')
 			if glow.Enabled then					
-				print('ROCK' .. tostring(index) .. ': Glow enabled')
 				-- Insert into table
 				table.insert(rocks, { index = index, rock = rock })
 			end
